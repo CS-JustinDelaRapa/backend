@@ -2,17 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const router = require('./routes/routes');
+const dotenv = require('dotenv');
 
 const app = express();
-const PORT = 8080;
 
 app.use(cors());
 app.use(express.json());
-
 app.use('/api/tictactoe', router);
 
+dotenv.config();
+const PORT = process.env.PORT || 8080;
+
 mongoose.set("strictQuery", false);
-mongoose.connect('mongodb+srv://admin:UMnXJQoABVJFYqG2@tictactoeapi.ajtqh.mongodb.net/game-data?retryWrites=true&w=majority&appName=TicTacToeAPI')
+mongoose.connect(process.env.MONGO_URI)
 .then(() =>{
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
